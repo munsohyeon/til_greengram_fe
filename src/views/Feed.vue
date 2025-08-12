@@ -4,6 +4,7 @@ import { useAuthenticationStore } from '@/stores/authentication';
 import FeedCard from '@/components/FeedCard.vue';
 import { getFeedList, postFeed } from '@/services/feedService';
 
+// 무한 스크롤
 const INFINITY_SCROLL_GAP = 500;
 
 const modalCloseButton = ref(null);
@@ -74,15 +75,16 @@ const handlePicChanged = e => {
 
 const saveFeed = async () => {
     console.log('state.feed.pics: ', state.feed.pics);
+    const MAX_PIC_COUNT = 10;
     //사진 있는지 확인    
-    if(state.feed.pics.length === 0) { 
-        alert('사진을 선택해 주세요.');
+    if(state.feed.pics.length > MAX_PIC_COUNT) { 
+        alert(`사진은 ${MAX_PIC_COUNT} 장까지 가능합니다.`);
         return;
     }
 
     const params = {
-        contents: state.feed.contents,
-        location: state.feed.location
+        contents: state.feed.contents.length === 0 ? null : state.feed.contents,
+        location: state.feed.location.length === 0 ? null : state.feed.location 
     }
 
     const formData = new FormData();

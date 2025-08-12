@@ -16,7 +16,7 @@ export const checkValidation = () => {
       } else {
         const regexp = item.getAttribute('regexp');
         const regexpObj = new RegExp(regexp);
-
+        
         if (!value.match(regexpObj)) {
           message += item.getAttribute('regexp-message') + '\n';
         }
@@ -26,7 +26,7 @@ export const checkValidation = () => {
     if (result.length > 0) {
       alert(result);
     }
-    return result.length > 0
+    return result.length > 0 // 유효성 문제가 하나라도 있다면 return true가 된다.
   }
-  return false;
+  return false; // 유효성 
 }

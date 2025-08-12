@@ -44,18 +44,18 @@ const submit = async () => {
     alert('역할을 선택해 주세요.');
     return;
   }
-
+// 닉네임을 보내지 않음 그이유는 nickname이 null 일수도 있기 때문
   const params = {
     uid: state.data.uid.trim(),
     upw: state.data.upw.trim(),
     roles: state.data.roles,
   };
-  if (state.data.nickName.trim().length > 0) {
+  if (state.data.nickName.trim().length > 0) { // 닉네임에 무엇인가 적혀있다면 param
     params.nickName = state.data.nickName.trim();
   }
 
   const formData = new FormData();
-  formData.append(
+  formData.append( //append는 추가
     'req',
     new Blob([JSON.stringify(params)], { type: 'application/json' })
   );
