@@ -19,19 +19,17 @@ const state = reactive({
   },
 });
 
-const openFileSelector = () => {
+const openFileSelector = e => {
   fileInput.value.click();
 };
 
-const handlePicChanged = (e) => {
+const handlePicChanged = e => {
   state.data.pic = e.target.files[0];
 };
 
 const submit = async () => {
   //유효성 체크
-  if (checkValidation()) {
-    return;
-  }
+  if (checkValidation()) { return; }
 
   //비밀번호, 확인 비밀번호 체크
   if (state.data.chkUpw !== state.data.upw) {
@@ -44,21 +42,18 @@ const submit = async () => {
     alert('역할을 선택해 주세요.');
     return;
   }
-// 닉네임을 보내지 않음 그이유는 nickname이 null 일수도 있기 때문
+
   const params = {
     uid: state.data.uid.trim(),
     upw: state.data.upw.trim(),
     roles: state.data.roles,
   };
-  if (state.data.nickName.trim().length > 0) { // 닉네임에 무엇인가 적혀있다면 param
+  if (state.data.nickName.trim().length > 0) { //닉네임에 무엇인가 적혀있다면 params에 추가
     params.nickName = state.data.nickName.trim();
   }
 
   const formData = new FormData();
-  formData.append( //append는 추가
-    'req',
-    new Blob([JSON.stringify(params)], { type: 'application/json' })
-  );
+  formData.append( 'req', new Blob([JSON.stringify(params)], { type: 'application/json' }) );
   if (state.data.pic) {
     formData.append('pic', state.data.pic);
   }
@@ -90,7 +85,9 @@ const submit = async () => {
             regexp-message="아이디는 영어, 숫자, 언더바로만 구성되어야 하며 4~50자까지 작성할 수 있습니다." />
           <label for="uid" class="form-label">아이디</label>
         </div>
+
         <div class="form-floating">
+          
           <input
             type="password"
             class="form-control valid"
@@ -128,16 +125,14 @@ const submit = async () => {
           <!-- TODO: DB통신으로 인가 리스트 가져오기 -->
           <select v-model="state.data.roles" multiple>
             <option>유저1</option>
-            <option>유저2</option>
+            <option>유저2</option>            
             <option>관리자</option>
             <option>멘토</option>
             <option>매니저</option>
           </select>
         </div>
         <div>
-          <b-button variant="outline-primary" @click="openFileSelector"
-            >프로필 사진</b-button
-          >
+          <b-button variant="outline-primary" @click="openFileSelector">프로필 사진</b-button>
           <input
             ref="fileInput"
             hidden
@@ -145,9 +140,7 @@ const submit = async () => {
             type="file"
             accept="image/*"
             @change="handlePicChanged" />
-          <span class="ms-3" v-if="state.data.pic">{{
-            state.data.pic.name
-          }}</span>
+          <span class="ms-3" v-if="state.data.pic">{{ state.data.pic.name }}</span>
         </div>
         <button class="w-100 h6 btn py-3 btn-primary">회원가입</button>
       </form>
@@ -156,7 +149,5 @@ const submit = async () => {
 </template>
 
 <style scoped>
-.container {
-  max-width: 576px;
-}
+.container { max-width: 576px; }
 </style>
