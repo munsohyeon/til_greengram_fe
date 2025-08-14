@@ -3,27 +3,30 @@ import { defineStore } from 'pinia'
 import router from '@/router'
 
 export const useAuthenticationStore = defineStore(
-    "authentication", 
+    "authentication",
     () => {
-        const state = reactive({            
+        const state = reactive({
             signedUser: null,
             isSigned: false
         });
 
-        const setSignedUser = val => {
-            state.signedUser = val;
+        const setSignedUser = signedUser => {
             state.isSigned = true;
+            state.signedUser = signedUser
+        }
+
+        const setSigndUserPic = pic => {
+            state.signedUser.pic = pic;
         }
 
         const signOut = async () => {
             console.log('signOut 처리')
-            state.signedUser = null;
             state.isSigned = false;
-            
+            state.signedUser = null;
             await router.push('/sign-in')
         }
 
-        return { state, setSignedUser, signOut };
-    }, 
+        return { state, setSignedUser, setSigndUserPic, signOut };
+    },
     { persist: true }
 );
