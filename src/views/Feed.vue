@@ -1,11 +1,10 @@
 <script setup>
+import loadingImg from '@/assets/loading.gif';
 import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { useAuthenticationStore } from '@/stores/authentication';
 import FeedCard from '@/components/FeedCard.vue';
 import { getFeedList, postFeed } from '@/services/feedService';
 import { bindEvent } from '@/utils/commonUtils';
-
-
 
 const modalCloseButton = ref(null);
 
@@ -62,7 +61,7 @@ const getData = async () => {
     if (res.status === 200) {
         const result = res.data.result;
         if (result && result.length > 0) {
-            state.list = [...state.list, ...result];
+            state.list.push(...result);
         }
         if (result.length < data.rowPerPage) {
             state.isFinish = true
@@ -137,7 +136,7 @@ const initInputs = () => {
     <section class="back_color">
         <div class="container d-flex flex-column align-items-center">
             <feed-card v-for="item in state.list" :key="item.feedId" :item="item"></feed-card>
-            <p v-if="state.isLoading">Loading...</p>
+            <div v-if="state.isLoading" class="loading display-none"><img :src="loadingImg" /></div>
         </div>
     </section>
     <div class="modal fade" id="newFeedModal" tabIndex="-1" aria-labelledby="newFeedModalLabel" aria-hidden="false">
